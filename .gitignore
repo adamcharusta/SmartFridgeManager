@@ -578,3 +578,7 @@ FodyWeavers.xsd
 
 #Docker volumes
 data
+data_dev
+
+#Github repositories
+repositories
