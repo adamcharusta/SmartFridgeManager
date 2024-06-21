@@ -14,6 +14,40 @@ services:
       - ${MSSQL_VOLUME}:/var/opt/mssql
     networks:
       - mssql
+  redis:
+    image: redis:${REDIS_VERSION}
+    container_name: redis
+    restart: always
+    ports:
+      - ${REDIS_PORT}:6379
+    volumes:
+      - ${REDIS_VOLUME}:/data
+    networks:
+      - redis
+  rabbitmq:
+    image: rabbitmq:${RABBITMQ_VERSION}
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - ${RABBITMQ_PORT}:5672
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - ${RABBITMQ_VOLUME}:/var/lib/rabbitmq
+    networks:
+      - rabbitmq
+  workers:
+    image: charustaadam95/smart-fridge-manager-workers:${WORKERS_VERSION}
+    container_name: workers
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${WORKERS_ASPNETCORE_ENVIRONMENT}
+    depends_on:
+      - rabbitmq
+      - api
+    networks:
+      - rabbitmq
   api:
     image: charustaadam95/smart-fridge-manager-api:${API_VERSION}
     container_name: api
@@ -24,7 +58,11 @@ services:
       - ASPNETCORE_ENVIRONMENT=${API_ASPNETCORE_ENVIRONMENT}
     depends_on:
       - mssql
+      - rabbitmq
+      - redis
     networks:
+      - rabbitmq
+      - redis
       - mssql
       - api
   gui:
@@ -41,9 +79,17 @@ services:
 volumes:
   mssql_data:
     driver: local
+  rabbitmq_data:
+    driver: local
+  redis_data:
+    driver: local
 
 networks:
   mssql:
     driver: bridge
   api:
+    driver: bridge
+  rabbitmq:
+    driver: bridge
+  redis:
     driver: bridge

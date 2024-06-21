@@ -3,7 +3,11 @@ repository_dir="repositories"
 mkdir -p ../${repository_dir}
 cd ../${repository_dir}
 
-repository_names=("SmartFridgeManagerGUI" "SmartFridgeManagerAPI")
+repository_names=(
+    "SmartFridgeManagerGUI" 
+    "SmartFridgeManagerAPI" 
+    "SmartFridgeManagerWorkers"
+)
 
 create_repository_clone_url() {
     local repository_name=$1
@@ -17,10 +21,10 @@ instal_dependencies() {
     local repository_name=$1
 
     echo "Installing dependencies for $repository_name..."
+
     if [ -f $repository_name/package.json ]; then
         cd $repository_name
         yarn install && yarn build
-        cd - > /dev/null
     elif [ -f $repository_name/${repository_name}.sln ]; then
         cd $repository_name
         dotnet restore && dotnet build
@@ -28,6 +32,8 @@ instal_dependencies() {
         echo "No dependencies to install for $repository_name"
         exit 1
     fi
+
+    cd - > /dev/null
 }
 
 clone_repository() {
@@ -41,9 +47,9 @@ clone_repository() {
         git pull
         cd - > /dev/null
     else
-        local url=$(create_repository_clone_url repository_name)
-
-        echo url
+        local url=$(create_repository_clone_url $repository_name)
+        
+        echo $url
         echo "Repository $repository_name does not exist. Cloning..."
         git clone $url
     fi

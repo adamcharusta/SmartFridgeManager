@@ -577,8 +577,8 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/windows,linux,macos,visualstudio,visualstudiocode,intellij+all,dotenv
 
 #Docker volumes
-data
-data_dev
+*_data
+*_data_dev
 
 #Github repositories
 repositories
