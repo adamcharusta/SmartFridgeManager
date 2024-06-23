@@ -29,7 +29,8 @@ services:
     container_name: rabbitmq_dev
     restart: always
     ports:
-      - ${RABBITMQ_PORT}:5672
+      - ${RABBITMQ_API_PORT}:5672
+      - ${RABBITMQ_UI_PORT}:15672
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
