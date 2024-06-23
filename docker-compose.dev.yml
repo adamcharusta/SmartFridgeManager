@@ -44,6 +44,8 @@ services:
     restart: always
     environment:
       - ASPNETCORE_ENVIRONMENT=${WORKERS_ASPNETCORE_ENVIRONMENT}
+    volumes:
+      - ${WORKERS_LOGS_PATH}_dev:/logs
     depends_on:
       - rabbitmq
       - api
@@ -58,6 +60,8 @@ services:
       - ${API_PORT}:80
     environment:
       - ASPNETCORE_ENVIRONMENT=${API_ASPNETCORE_ENVIRONMENT}
+    volumes:
+      - ${API_LOGS_PATH}_dev:/logs
     depends_on:
       - mssql
       - rabbitmq
@@ -85,6 +89,10 @@ volumes:
   rabbitmq_data_dev:
     driver: local
   redis_data_dev:
+    driver: local
+  api_logs_dev:
+    driver: local
+  workers_logs_dev:
     driver: local
 
 networks:
