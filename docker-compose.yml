@@ -59,6 +59,7 @@ services:
       - ${API_PORT}:80
     environment:
       - ASPNETCORE_ENVIRONMENT=${API_ASPNETCORE_ENVIRONMENT}
+      - DB_CONNECTION_STRING=${API_DB_CONNECTION_STRING}
     volumes:
       - ${API_LOGS_PATH}:/logs
     depends_on:
