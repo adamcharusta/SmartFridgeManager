@@ -76,6 +76,8 @@ services:
       - RABBITMQ_PORT=${RABBITMQ_API_PORT}
       - RABBITMQ_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_PASS=${RABBITMQ_DEFAULT_PASS}
+      - REDIS_HOSTNAME=redis
+      - REDIS_PORT=${REDIS_PORT}
     volumes:
       - ${API_LOGS_PATH}:/logs
     depends_on:
